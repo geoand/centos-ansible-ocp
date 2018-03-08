@@ -25,7 +25,7 @@ openshift_master_unsupported_embedded_etcd=true
 
 openshift_enable_service_catalog=true
 
-ansible_python_interpreter=/usr/bin/python3.6
+ansible_python_interpreter=/usr/bin/python
 
 ansible_service_broker_registry_whitelist=['.*-apb$']
 ansible_service_broker_image_tag=v3.7
