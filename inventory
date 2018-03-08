@@ -1,0 +1,43 @@
+[OSEv3:children]
+masters
+nodes
+etcd
+
+[OSEv3:vars]
+ansible_user=root
+
+public_ip_address=192.168.99.58
+
+# For Atomic VM
+containerized=false
+
+openshift_release=v3.7
+openshift_image_tag=v3.7.0
+openshift_pkg_version="-3.7.0"
+
+openshift_deployment_type=origin
+
+openshift_hostname=192.168.99.58
+openshift_master_cluster_public_hostname=192.168.99.58
+openshift_master_default_subdomain=192.168.99.58.nip.io
+openshift_disable_check=memory_availability,disk_availability,docker_image_availability
+openshift_master_unsupported_embedded_etcd=true
+
+openshift_enable_service_catalog=true
+
+ansible_python_interpreter=/usr/bin/python3.6
+
+ansible_service_broker_registry_whitelist=['.*-apb$']
+ansible_service_broker_image_tag=v3.7
+ansible_service_broker_registry_tag=v3.7
+ansible_service_broker_remove=false
+ansible_service_broker_install=true
+
+[masters]
+192.168.99.58 openshift_public_hostname=192.168.99.58
+
+[etcd]
+192.168.99.58
+
+[nodes]
+192.168.99.58 openshift_node_labels="{'region':'infra','zone':'default'}" openshift_public_hostname=192.168.99.58 openshift_schedulable=true

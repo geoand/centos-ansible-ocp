@@ -1,0 +1,5 @@
+.idea/
+.DS_Store
+openshift-ansible/
+ansible.log
+centos7.iso

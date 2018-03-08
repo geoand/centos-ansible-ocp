@@ -1,0 +1,8 @@
+---
+- hosts: "{{ openshift_node }}"
+  gather_facts: False
+  remote_user: vagrant
+  tasks:
+    - name: Install and Enable Network Manager
+      shell: dnf -y install NetworkManager && sudo systemctl start NetworkManager && sudo systemctl enable NetworkManager
+      become: true
