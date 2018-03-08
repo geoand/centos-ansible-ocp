@@ -21,17 +21,13 @@ openshift_deployment_type=origin
 openshift_hostname=192.168.99.62
 openshift_master_cluster_public_hostname=192.168.99.62
 openshift_master_default_subdomain=192.168.99.62.nip.io
-openshift_disable_check=memory_availability,disk_availability,docker_image_availability
 openshift_master_unsupported_embedded_etcd=true
 
 # To avoid message
 # - Available disk space in "/var" (9.5 GB) is below minimum recommended (40.0 GB)
-openshift_disable_check=disk_availability,memory_availability
-
-# To avoid message
 # - Docker storage drivers 'overlay' and 'overlay2' are only supported with 'xfs' as the backing storage, but this host's storage is type 'extfs'
 # - Available memory (2.0 GiB) is too far below recommended value (16.0 GiB)
-openshift_disable_check=docker_storage,memory_availability
+openshift_disable_check = docker_storage,memory_availability,disk_availability,docker_image_availability
 
 openshift_enable_service_catalog=true
 
