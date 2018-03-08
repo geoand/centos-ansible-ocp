@@ -21,10 +21,6 @@ git clone -b release-3.7 https://github.com/openshift/openshift-ansible.git
 ansible-playbook -i inventory playbook/install-package.yaml -e openshift_node=masters
 ```
 
-# Authentication or permission failure. In some cases, you may have been able to authenticate and did not have permissions on the target directory.
-# Consider changing the remote temp path in ansible.cfg to a path rooted in \"/tmp\"
-remote_tmp = /tmp/.ansible-${USER}/tmp
-
 - Create OpenShift cluster
 ```bash
 ansible-playbook -i inventory openshift-ansible/playbooks/byo/config.yml
