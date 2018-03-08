@@ -12,12 +12,12 @@
 ISO_NAME="centos7.iso"
 ISO="$(pwd)/$ISO_NAME" # MiniShift ISO Image - https://github.com/minishift/minishift-centos-iso/releases/download/v1.7.0/minishift-centos7.iso
 virtualbox_vm_name="CentOS-7.1" # VM Name
-OSTYPE="RedHat";
+OSTYPE="Linux_64";
 DISKSIZE=20480; #in MB
 RAM=2048; #in MB
 CPU=2;
 CPUCAP=100;
-PAE="off";
+PAE="on";
 VRAM=8;
 USB="off";
 
@@ -46,7 +46,7 @@ vboxmanage dhcpserver modify --ifname vboxnet0 --enable
 
 ##########################################
 echo "######### Create VM"
-vboxmanage createvm --name ${virtualbox_vm_name} --ostype "RedHat_64" --register --basefolder=$HOME/VirtualBox\ VMs
+vboxmanage createvm --name ${virtualbox_vm_name} --ostype "$OSTYPE" --register --basefolder=$HOME/VirtualBox\ VMs
 
 # VirtualBox Network
 vboxmanage modifyvm ${virtualbox_vm_name} \
@@ -66,17 +66,26 @@ vboxmanage modifyvm ${virtualbox_vm_name} --vram "$VRAM";
 vboxmanage modifyvm ${virtualbox_vm_name} --monitorcount 1;
 vboxmanage modifyvm ${virtualbox_vm_name} --accelerate2dvideo off --accelerate3d off;
 vboxmanage modifyvm ${virtualbox_vm_name} --audio none;
+vboxmanage modifyvm ${virtualbox_vm_name} --hpet on;
+vboxmanage modifyvm ${virtualbox_vm_name} --x2apic off;
+vboxmanage modifyvm ${virtualbox_vm_name} --rtcuseutc on;
+vboxmanage modifyvm ${virtualbox_vm_name} --nestedpaging on;
+vboxmanage modifyvm ${virtualbox_vm_name} --hwvirtex on;
 
 vboxmanage modifyvm ${virtualbox_vm_name} --clipboard bidirectional;
 vboxmanage modifyvm ${virtualbox_vm_name} --usb "$USB";
 vboxmanage modifyvm ${virtualbox_vm_name} --vrde on;
 
 # VirtualBox - Attach ISO image to IDE
-vboxmanage storagectl ${virtualbox_vm_name} --name "IDE" --add ide --controller PIIX4 --bootable on
-vboxmanage storageattach ${virtualbox_vm_name} --storagectl IDE --port 0 --device 0 --type dvddrive --medium $ISO
+# vboxmanage storagectl ${virtualbox_vm_name} --name "IDE" --add ide --controller PIIX4 --bootable on
+# vboxmanage storageattach ${virtualbox_vm_name} --storagectl IDE --port 0 --device 0 --type dvddrive --medium $ISO
 
 # VirtualBox HDD
 vboxmanage storagectl ${virtualbox_vm_name} --name "SATA" --add sata --controller IntelAhci --bootable on
+vboxmanage storageattach ${virtualbox_vm_name} --storagectl "SATA" --type hdd --port 0 --device 0 --type dvddrive --medium $ISO
+vboxmanage createhd --filename "$HOME/VirtualBox\ VMs/${virtualbox_vm_name}.vmdk" --size 19530
+vboxmanage storageattach ${virtualbox_vm_name} --storagectl "SATA" --type hdd --port 1 --device 0 --medium "$HOME/VirtualBox\ VMs/${virtualbox_vm_name}.vmdk"
+
 
 # VirtualBox HDD - Config used to boot the first time the ISO !
 #vboxmanage createmedium --filename "$HOME/VirtualBox\ VMs/${virtualbox_vm_name}.vdi" --size "$DISKSIZE"
