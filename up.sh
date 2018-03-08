@@ -76,21 +76,15 @@ vboxmanage modifyvm ${virtualbox_vm_name} --clipboard bidirectional;
 vboxmanage modifyvm ${virtualbox_vm_name} --usb "$USB";
 vboxmanage modifyvm ${virtualbox_vm_name} --vrde on;
 
-# VirtualBox - Attach ISO image to IDE
-# vboxmanage storagectl ${virtualbox_vm_name} --name "IDE" --add ide --controller PIIX4 --bootable on
-# vboxmanage storageattach ${virtualbox_vm_name} --storagectl IDE --port 0 --device 0 --type dvddrive --medium $ISO
-
 # VirtualBox HDD
-vboxmanage storagectl ${virtualbox_vm_name} --name "SATA" --add sata --controller IntelAhci --bootable on
+echo "######### Create SATA storage"
+vboxmanage storagectl ${virtualbox_vm_name} --name "SATA" --add sata --controller IntelAhci --bootable on --hostiocache on
+echo "######### Attach ISO to SATA Controller as port 0"
 vboxmanage storageattach ${virtualbox_vm_name} --storagectl "SATA" --type hdd --port 0 --device 0 --type dvddrive --medium $ISO
-vboxmanage createhd --filename "$HOME/VirtualBox\ VMs/${virtualbox_vm_name}.vmdk" --size 19530
-vboxmanage storageattach ${virtualbox_vm_name} --storagectl "SATA" --type hdd --port 1 --device 0 --medium "$HOME/VirtualBox\ VMs/${virtualbox_vm_name}.vmdk"
-
-
-# VirtualBox HDD - Config used to boot the first time the ISO !
-#vboxmanage createmedium --filename "$HOME/VirtualBox\ VMs/${virtualbox_vm_name}.vdi" --size "$DISKSIZE"
-#vboxmanage storagectl ${virtualbox_vm_name} --name "SATA" --add sata --controller IntelAhci --bootable on
-#vboxmanage storageattach ${virtualbox_vm_name} --storagectl "SATA" --type hdd --port 0 --device 0 --medium "$HOME/VirtualBox\ VMs/${virtualbox_vm_name}.vdi"
+echo "######### Create vmdk HD"
+vboxmanage createhd --filename $HOME/VirtualBox\ VMs/${virtualbox_vm_name}/disk.vmdk --size 5000 --format VMDK
+echo "######### Attach vmdk to SATA Controller as port 1"
+vboxmanage storageattach ${virtualbox_vm_name} --storagectl "SATA" --type hdd --port 1 --device 0 --medium $HOME/VirtualBox\ VMs/${virtualbox_vm_name}/disk.vmdk
 
 vboxmanage startvm ${virtualbox_vm_name} --type headless
 vboxmanage controlvm ${virtualbox_vm_name} natpf2 ssh,tcp,127.0.0.1,5222,,22
