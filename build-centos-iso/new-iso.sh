@@ -64,7 +64,6 @@ net-tools
 parted
 shadow-utils
 shim
-syslinux
 python-setuptools
 %end
 EOF
