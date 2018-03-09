@@ -39,7 +39,8 @@ reboot
 firewall --enabled --ssh
 
 # Network information
-network  --bootproto=dhcp --device=eth0
+network --bootproto=dhcp --device=eth0 --activate --onboot=on
+network --bootproto=dhcp --device=eth1 --activate --onboot=on
 
 # System bootloader configuration
 bootloader --location=mbr --boot-drive=sda
@@ -64,7 +65,6 @@ net-tools
 parted
 shadow-utils
 shim
-syslinux
 python-setuptools
 %end
 EOF
