@@ -4,7 +4,6 @@ LOCAL_HOST="/Users/dabou/images"
 CENTOS_ISO="CentOS-7-x86_64-Minimal-1708.iso"
 ISO_NAME="centos7.iso"
 ISO="$LOCAL_HOST/$CENTOS_ISO"
-virtualbox_vm_name="CentOS-7.1" # VM Name
 
 cat > centos-7.ks << 'EOF'
 # Action
