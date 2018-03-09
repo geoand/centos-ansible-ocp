@@ -86,6 +86,10 @@ vboxmanage createhd --filename $HOME/VirtualBox\ VMs/${virtualbox_vm_name}/disk.
 echo "######### Attach vmdk to SATA Controller as port 1"
 vboxmanage storageattach ${virtualbox_vm_name} --storagectl "SATA" --type hdd --port 1 --device 0 --medium $HOME/VirtualBox\ VMs/${virtualbox_vm_name}/disk.vmdk
 
+echo "######### Mount shared folder"
+vboxmanage sharedfolder add ${virtualbox_vm_name} --name Users --hostpath /Users --automount
+
+echo "######### Start VM"
 vboxmanage startvm ${virtualbox_vm_name} --type headless
 vboxmanage controlvm ${virtualbox_vm_name} natpf2 ssh,tcp,127.0.0.1,5222,,22
 

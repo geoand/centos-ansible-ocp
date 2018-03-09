@@ -83,7 +83,7 @@ mkdir /tmp/bootisoks
 cp -r /tmp/bootiso/* /tmp/bootisoks/
 sudo umount /tmp/bootiso && rmdir /tmp/bootiso
 chmod -R u+w /tmp/bootisoks
-cp centos7-2.ks /tmp/bootisoks/isolinux/ks.cfg
+cp centos7.ks /tmp/bootisoks/isolinux/ks.cfg
 sed -i 's/append\ initrd\=initrd.img$/append initrd=initrd.img\ ks\=cdrom:\/ks.cfg/' /tmp/bootisoks/isolinux/isolinux.cfg
 cd /tmp/bootisoks && mkisofs -o /tmp/boot.iso -b isolinux.bin -c boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -V "CentOS 7 x86_64" -R -J -v -T isolinux/. .
 implantisomd5 "/tmp/boot.iso"
