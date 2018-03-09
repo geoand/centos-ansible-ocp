@@ -7,16 +7,70 @@ ISO="$LOCAL_HOST/$CENTOS_ISO"
 virtualbox_vm_name="CentOS-7.1" # VM Name
 
 cat > centos-7.ks << 'EOF'
-#platform=x86, AMD64, or Intel EM64T
-#version=DEVEL
-# Install OS instead of upgrade
+# Action
 install
+
+# Run the Setup Agent on first boot
+firstboot --enable
+
+# Accept Eula
+eula --agreed
+
+# Keyboard layouts
+keyboard --vckeymap=es --xlayouts='es'
+# System language
+lang en_US.UTF-8
+
+# Root pwd
+sshpw --username=root --plaintext centos
+rootpw --plaintext centos
+auth --useshadow --passalgo=sha512
+
+# System timezone
+timezone Europe/Brussels --isUtc --ntpservers=0.centos.pool.ntp.org,1.centos.pool.ntp.org,2.centos.pool.ntp.org,3.centos.pool.ntp.org
+
+# System services
+services --enabled=NetworkManager,sshd
+
+# Reboot after installing
+reboot
+
 # Firewall configuration
 firewall --enabled --ssh
-# Use CDROM installation media
-cdrom
+
 # Network information
 network  --bootproto=dhcp --device=eth0
+
+# System bootloader configuration
+bootloader --location=mbr --boot-drive=sda
+autopart --type=lvm
+zerombr
+
+# Partition clearing information
+clearpart --all --drives=sda
+ignoredisk --only-use=sda
+
+%packages  --excludedocs --instLangs=en
+@core
+openssl
+bash
+dracut
+e4fsprogs
+efibootmgr
+grub2
+grub2-efi
+kernel
+net-tools
+parted
+shadow-utils
+shim
+syslinux
+cifs-utils
+fuse-sshfs
+nfs-utils
+go-hvkvp
+python-setuptools
+%end
 EOF
 
 echo "##### Create our own ISO ....."
