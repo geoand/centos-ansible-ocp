@@ -71,7 +71,7 @@ EOF
 
 cat > isolinux.cfg << 'EOF'
 default vesamenu.c32
-timeout 600
+timeout 1
 
 display boot.msg
 
