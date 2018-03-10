@@ -49,6 +49,7 @@ ignoredisk --only-use=sda
 @core
 openssl
 bash
+docker
 dracut
 e4fsprogs
 efibootmgr
