@@ -72,19 +72,22 @@ vboxmanage storageattach ${virtualbox_vm_name} --storagectl "SATA" --type hdd --
 
 
 echo "######### Create IDE storage"
-vboxmanage storagectl CentOS-7.1 --name "IDE Controller" --add ide
-vboxmanage storageattach CentOS-7.1 --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium $LOCAL_HOST/$ISO_NAME
-vboxmanage storageattach CentOS-7.1 --storagectl "IDE Controller" --port 1 --device 0 --type dvddrive --medium emptydrive
-vboxmanage storageattach CentOS-7.1 --storagectl "IDE Controller" --port 1 --device 0 --type dvddrive --medium additions
-vboxmanage modifyvm CentOS-7.1 --boot1 dvd --boot2 disk --boot3 none --boot4 none
+vboxmanage storagectl ${virtualbox_vm_name} --name "IDE Controller" --add ide
+vboxmanage storageattach ${virtualbox_vm_name} --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium $LOCAL_HOST/$ISO_NAME
+vboxmanage storageattach ${virtualbox_vm_name} --storagectl "IDE Controller" --port 1 --device 0 --type dvddrive --medium emptydrive
+vboxmanage storageattach ${virtualbox_vm_name} --storagectl "IDE Controller" --port 1 --device 0 --type dvddrive --medium additions
+vboxmanage modifyvm ${virtualbox_vm_name} --boot1 dvd --boot2 disk --boot3 none --boot4 none
 
-vboxmanage startvm CentOS-7.1 --type headless
+vboxmanage startvm ${virtualbox_vm_name} --type headless
 until $(vboxmanage showvminfo --machinereadable CentOS-7.1 | grep -q ^VMState=.poweroff.); do
     sleep 10
 done
 
 echo "######### Remove IDE DVD"
-vboxmanage storagectl CentOS-7.1 --name "IDE Controller" --remove
-vboxmanage storagectl CentOS-7.1 --name "IDE Controller" --add ide
-vboxmanage storageattach CentOS-7.1 --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium emptydrive
+vboxmanage storagectl ${virtualbox_vm_name} --name "IDE Controller" --remove
+vboxmanage storagectl ${virtualbox_vm_name} --name "IDE Controller" --add ide
+vboxmanage storageattach ${virtualbox_vm_name} --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium emptydrive
+
+vboxmanage startvm ${virtualbox_vm_name} --type headless
+vboxmanage controlvm ${virtualbox_vm_name} natpf2 ssh,tcp,127.0.0.1,5222,,22
 

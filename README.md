@@ -1,5 +1,12 @@
 # Install OpenShift Cluster using ansible & CentOS VM provisioned on Virtualbox
 
+- Create iso
+```bash
+vagrant plugin install vagrant-vbguest
+vagrant plugin install sshd
+
+```
+
 - Create Virtualbox vm using the `up.sh` bash script
 ```bash
 ./up.sh
