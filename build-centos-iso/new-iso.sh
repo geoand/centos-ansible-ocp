@@ -33,5 +33,5 @@ cd /tmp/bootisoks && mkisofs -o /tmp/boot.iso -b isolinux.bin -c boot.cat -no-em
 echo "##### Ad md5 signature"
 implantisomd5 "/tmp/boot.iso"
 
-echo "##### Copy iso file to your local_host"
+echo "##### Copy iso file to your local_host : $LOCAL_HOST/$CENTOS_ISO"
 cp /tmp/boot.iso $LOCAL_HOST/$ISO_NAME
