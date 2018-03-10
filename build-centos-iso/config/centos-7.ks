@@ -37,7 +37,7 @@ network --bootproto=dhcp --device=eth0 --activate --onboot=on
 network --bootproto=dhcp --device=eth1 --activate --onboot=on
 
 # System bootloader configuration
-bootloader --location=mbr --boot-drive=sda
+bootloader --timeout=1 --location=mbr --boot-drive=sda --append="no_timer_check console=ttyS0 console=tty0 net.ifnames=0 biosdevname=0"
 autopart --type=lvm
 zerombr
 
