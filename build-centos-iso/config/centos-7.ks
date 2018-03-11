@@ -35,6 +35,7 @@ selinux --enforcing
 # Network information
 network --bootproto=dhcp --device=eth0 --activate --onboot=on
 network --bootproto=dhcp --device=eth1 --activate --onboot=on
+# network --bootproto=static --device=eth0 --activate --onboot=on --ip=192.168.99.50 --netmask=255.255.255.0 --gateway=192.168.99.1 --nameserver=192.168.2.1 --nameserver=8.8.8.8
 
 # System bootloader configuration
 bootloader --timeout=1 --location=mbr --boot-drive=sda --append="no_timer_check console=ttyS0 console=tty0 net.ifnames=0 biosdevname=0"
@@ -45,11 +46,17 @@ zerombr
 clearpart --all --drives=sda
 ignoredisk --only-use=sda
 
+#Repos
+repo --name=base --baseurl=http://mirror.centos.org/centos/7/os/x86_64/
+repo --name=updates --baseurl=http://mirror.centos.org/centos/7/updates/x86_64/
+repo --name=extras --baseurl=http://mirror.centos.org/centos/7/extras/x86_64/
+repo --name=atomic --baseurl=http://mirror.centos.org/centos/7/atomic/x86_64/adb/
+
 %packages  --excludedocs --instLangs=en
 @core
 openssl
 bash
-docker
+# docker # TODO Check why this package is not there during installation
 dracut
 e4fsprogs
 efibootmgr
