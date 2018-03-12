@@ -1,4 +1,4 @@
-# Install OpenShift Cluster using ansible & CentOS VM provisioned on Virtualbox
+# Install OpenShift Cluster using Ansible & CentOS VM provisioned on Virtualbox
 
 ## Modify CentOS ISO
 
