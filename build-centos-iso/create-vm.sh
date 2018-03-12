@@ -25,7 +25,8 @@ echo "######### Create vboxnet0 network and set dhcp server : 192.168.99.0/24"
 vboxmanage hostonlyif remove vboxnet0
 vboxmanage hostonlyif create
 vboxmanage hostonlyif ipconfig vboxnet0 --ip 192.168.99.1 --netmask 255.255.255.0
-vboxmanage dhcpserver add --ifname vboxnet0 --ip 192.168.99.20 --netmask 255.255.255.0 --lowerip 192.168.99.50 --upperip 192.168.99.200
+vboxmanage dhcpserver remove --ifname vboxnet0
+vboxmanage dhcpserver add --ifname vboxnet0 --ip 192.168.99.20 --netmask 255.255.255.0 --lowerip 192.168.99.50 --upperip 192.168.99.50
 vboxmanage dhcpserver modify --ifname vboxnet0 --enable
 
 ##########################################
