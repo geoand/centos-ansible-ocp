@@ -62,7 +62,6 @@ ansible-playbook -i inventory openshift-ansible/playbooks/byo/config.yml
 
 - Post installation steps 
 
-  - Add Red Hat Subscription Manager certificate
   - Enable cluster admin role for `admin` user
   - Setup persistence using Host mount points, 
   - Create `infra` project
