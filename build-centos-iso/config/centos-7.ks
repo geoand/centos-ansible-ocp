@@ -33,8 +33,9 @@ firewall --disabled
 selinux --enforcing
 
 # Network information
-# network --bootproto=dhcp --device=eth0 --activate --onboot=on
-network --bootproto=static --device=eth0 --activate --onboot=on --ip=192.168.99.50 --netmask=255.255.255.0 --gateway=192.168.99.1 --nameserver=192.168.99.1 --nameserver=8.8.8.8
+# We can't setup IP fix. TODO: To be investigated
+# network --bootproto=static --device=eth0 --onboot=on --ip=192.168.99.50 --netmask=255.255.255.0 --gateway=192.168.99.1 --nameserver=192.168.99.1 --nameserver=8.8.8.8
+network --bootproto=dhcp --device=eth0 --activate --onboot=on
 network --bootproto=dhcp --device=eth1 --activate --onboot=on
 
 # System bootloader configuration
@@ -44,8 +45,7 @@ zerombr
 
 # Partition clearing information
 clearpart --all --drives=sda
-part / --fstype="ext4" --size=10240
-#ignoredisk --only-use=sda
+ignoredisk --only-use=sda
 
 #Repos
 repo --name=base --baseurl=http://mirror.centos.org/centos/7/os/x86_64/
