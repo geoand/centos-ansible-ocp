@@ -64,6 +64,9 @@ Remark : As rpms packages could be not be uploaded yum correctly the first time,
 ansible-playbook -i inventory openshift-ansible/playbooks/byo/config.yml
 ```
 
+Remarks:
+- If, during the execution of this playbook, ASB playbook will report an error, then relaunch this playbook.
+
 - Post installation steps 
 
   - Enable cluster admin role for `admin` user
@@ -71,6 +74,8 @@ ansible-playbook -i inventory openshift-ansible/playbooks/byo/config.yml
   - Create `infra` project
   - Install Nexus
   - Install Jenkins
+  
+Remark : As the `APB` pods will not be deployed correctly, Then relaunch the `APB` and `APB etcd` deployments from the console or terminal  
   
 ```bash
 ansible-playbook -i inventory playbook/post_installation.yml -e openshift_node=masters
