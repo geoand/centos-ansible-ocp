@@ -34,11 +34,13 @@ echo "######### Create VM"
 vboxmanage createvm --name ${virtualbox_vm_name} --ostype "$OSTYPE" --register --basefolder=$HOME/VirtualBox\ VMs
 
 # VirtualBox Network
+echo "######### Define NIC adapters; NAT and vboxnet0"
 vboxmanage modifyvm ${virtualbox_vm_name} \
         --nic1 hostonly --hostonlyadapter1 vboxnet0 \
         --nic2 nat
 
 # VM Config
+echo "######### Customize vm; ram, cpu, ...."
 vboxmanage modifyvm ${virtualbox_vm_name} --memory "$RAM";
 vboxmanage modifyvm ${virtualbox_vm_name} --boot1 dvd --boot2 disk --boot3 none --boot4 none;
 vboxmanage modifyvm ${virtualbox_vm_name} --chipset piix3;
