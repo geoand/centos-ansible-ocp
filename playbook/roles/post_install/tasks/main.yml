@@ -1,3 +1,6 @@
+- name: Add cluster-admin privileges to admin user
+  shell: oc adm policy add-cluster-role-to-user cluster-admin admin
+
 - name: Delete Project
   shell: oc delete project {{ item }} --ignore-not-found=true --force --now
   with_items:
