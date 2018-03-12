@@ -42,7 +42,7 @@ sshpass -f pwd.txt ssh-copy-id -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa.pub 
 
 - Add docker package as Centos kickstart can't install it during vm creation
 ```bash
-yum install docker
+ssh root@127.0.0.1 -p 5222 "yum -y install docker"
 ```
 
 - Git clone `openshihift-ansible` 
