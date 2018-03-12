@@ -63,7 +63,7 @@ ansible-playbook -i inventory openshift-ansible/playbooks/byo/config.yml
 - Post installation steps 
 
   - Enable cluster admin role for `admin` user
-  - Setup persistence using Host mount points, 
+  - Setup persistence using `HostPath` mounted volumes `/tmp/pv001 ...`, 
   - Create `infra` project
   - Install Nexus
   - Install Jenkins
