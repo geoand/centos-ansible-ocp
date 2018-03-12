@@ -55,6 +55,8 @@ git clone -b release-3.7 https://github.com/openshift/openshift-ansible.git
 ansible-playbook -i inventory playbook/install-package.yaml -e openshift_node=masters
 ```
 
+Remark : As rpms packages could be not be uploaded yum correctly the first time, then re-execute the command !
+
 - Create OpenShift cluster
 ```bash
 ansible-playbook -i inventory openshift-ansible/playbooks/byo/config.yml
