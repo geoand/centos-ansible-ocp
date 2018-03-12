@@ -1,6 +1,10 @@
 # Install OpenShift Cluster using ansible & CentOS VM provisioned on Virtualbox
 
 ## Modify CentOS ISO
+
+Depending on the host Operating System that is being run, one of the following method needs to be employed
+
+### MacOSX
 - Create iso
 ```bash
 vagrant plugin install vagrant-vbguest
@@ -9,7 +13,7 @@ cd build-centos-iso
 vagrant up
 ```
 
-- Ssh to the vm. 
+- Ssh to the vm.
 ```bash
 vagrant ssh
 ```
@@ -22,6 +26,14 @@ cd ..
 - The new ISO image has been created locally on your local machine under `$HOME/images`
 - Create new vm on your Virtualbox, using the script `./create_vm.sh` with the newly CentOS ISO image created
 ```bash
+./create-vm.sh
+```
+
+### Linux
+
+```bash
+cd build-centos-iso
+./new-iso.sh
 ./create-vm.sh
 ```
 
@@ -45,7 +57,7 @@ sshpass -f pwd.txt ssh-copy-id -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa.pub 
 ssh root@127.0.0.1 -p 5222 "yum -y install docker"
 ```
 
-- Git clone `openshihift-ansible` 
+- Git clone `openshihift-ansible`
 ```bash
 git clone -b release-3.7 https://github.com/openshift/openshift-ansible.git
 ```
@@ -60,14 +72,14 @@ ansible-playbook -i inventory playbook/install-package.yaml -e openshift_node=ma
 ansible-playbook -i inventory openshift-ansible/playbooks/byo/config.yml
 ```
 
-- Post installation steps 
+- Post installation steps
 
   - Enable cluster admin role for `admin` user
-  - Setup persistence using Host mount points, 
+  - Setup persistence using Host mount points,
   - Create `infra` project
   - Install Nexus
   - Install Jenkins
-  
+
 ```bash
 ansible-playbook -i inventory playbook/post_installation.yml -e openshift_node=masters
 ```
