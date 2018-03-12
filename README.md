@@ -13,7 +13,7 @@ cd build-centos-iso
 vagrant up
 ```
 
-- Ssh to the vm.
+- Ssh to the vm
 ```bash
 vagrant ssh
 ```
@@ -54,7 +54,7 @@ sshpass -f pwd.txt ssh-copy-id -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa.pub 
 
 - Add docker package as Centos kickstart can't install it during vm creation
 ```bash
-ssh root@127.0.0.1 -p 5222 "yum -y install docker"
+ssh root@127.0.0.1 -p 5222 "yum -y install docker python-rhsm-certificates"
 ```
 
 - Git clone `openshihift-ansible`
@@ -67,19 +67,26 @@ git clone -b release-3.7 https://github.com/openshift/openshift-ansible.git
 ansible-playbook -i inventory playbook/install-package.yaml -e openshift_node=masters
 ```
 
+Remark : As rpms packages could be not be uploaded yum correctly the first time, then re-execute the command !
+
 - Create OpenShift cluster
 ```bash
 ansible-playbook -i inventory openshift-ansible/playbooks/byo/config.yml
 ```
 
-- Post installation steps
+Remarks:
+- If, during the execution of this playbook, ASB playbook will report an error, then relaunch this playbook.
+
+- Post installation steps 
 
   - Enable cluster admin role for `admin` user
-  - Setup persistence using Host mount points,
+  - Setup persistence using `HostPath` mounted volumes `/tmp/pv001 ...`, 
   - Create `infra` project
   - Install Nexus
   - Install Jenkins
-
+  
+Remark : As the `APB` pods will not be deployed correctly, Then relaunch the `APB` and `APB etcd` deployments from the console or terminal  
+  
 ```bash
 ansible-playbook -i inventory playbook/post_installation.yml -e openshift_node=masters
 ```
