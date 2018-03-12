@@ -10,6 +10,3 @@
   shell: oc new-project {{ item }}
   with_items:
     - infra
-
-- name: Add Red Hat Subscription Manager certificate
-  shell: yum install python-rhsm-certificates -y
