@@ -65,7 +65,7 @@ echo "######### Create SATA storage"
 vboxmanage storagectl ${virtualbox_vm_name} --name "SATA" --add sata --controller IntelAhci --bootable on --hostiocache on
 
 echo "######### Create vmdk HD"
-vboxmanage createhd --filename $HOME/VirtualBox\ VMs/${virtualbox_vm_name}/disk.vmdk --size 5000 --format VMDK
+vboxmanage createhd --filename $HOME/VirtualBox\ VMs/${virtualbox_vm_name}/disk.vmdk --size 19530 --format VMDK
 
 echo "######### Attach vmdk to SATA Controller as port 1"
 vboxmanage storageattach ${virtualbox_vm_name} --storagectl "SATA" --type hdd --port 0 --device 0 --medium $HOME/VirtualBox\ VMs/${virtualbox_vm_name}/disk.vmdk
