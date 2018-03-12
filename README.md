@@ -60,7 +60,14 @@ ansible-playbook -i inventory playbook/install-package.yaml -e openshift_node=ma
 ansible-playbook -i inventory openshift-ansible/playbooks/byo/config.yml
 ```
 
-- Setup persistence
+- Post installation steps 
+
+  - Enable cluster admin role for `admin` user
+  - Setup persistence using Host mount points, 
+  - Create `infra` project
+  - Install Nexus
+  - Install Jenkins
+  
 ```bash
-ansible-playbook -i inventory playbook/setup_persistence.yml -e openshift_node=masters
+ansible-playbook -i inventory playbook/post_installation.yml -e openshift_node=masters
 ```

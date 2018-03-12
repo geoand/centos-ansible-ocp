@@ -1,26 +1,12 @@
-- name: Add cluster-admin privileges to admin user
-  shell: oc adm policy add-cluster-role-to-user cluster-admin admin
-
-# - name: Check for existing project for heketi
-#   shell: oc get project {{ item }} | grep "Active" || true
-#   register: {{ item }}_proj
-#   with_items:
-#     - infra
-#     - ci-cd
-
 - name: Delete Project
   shell: oc delete project {{ item }} --ignore-not-found=true --force --now
-#  when: "Active" in {{ item }}_proj.stdout
   with_items:
     - infra
-    - ci-cd
 
 - pause:
     seconds: 20
 
 - name: Create projects
   shell: oc new-project {{ item }}
-#  when: not "Active" in {{ item }}_proj.stdout
   with_items:
     - infra
-    - ci-cd
