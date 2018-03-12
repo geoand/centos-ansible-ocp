@@ -1,6 +1,10 @@
 # Install OpenShift Cluster using ansible & CentOS VM provisioned on Virtualbox
 
 ## Modify CentOS ISO
+
+Depending on the host Operating System that is being run, one of the following method needs to be employed
+
+### MacOSX
 - Create iso
 ```bash
 vagrant plugin install vagrant-vbguest
@@ -9,9 +13,7 @@ cd build-centos-iso
 vagrant up
 ```
 
-Remark : Vagrant machine is only required for MacOs's user ! Otherwise skip these steps and execute directly the bash script to create the iso image
-
-- Ssh to the vm. 
+- Ssh to the vm
 ```bash
 vagrant ssh
 ```
@@ -24,6 +26,14 @@ cd ..
 - The new ISO image has been created locally on your local machine under `$HOME/images`
 - Create new vm on your Virtualbox, using the script `./create_vm.sh` with the newly CentOS ISO image created
 ```bash
+./create-vm.sh
+```
+
+### Linux
+
+```bash
+cd build-centos-iso
+./new-iso.sh
 ./create-vm.sh
 ```
 
@@ -47,7 +57,7 @@ sshpass -f pwd.txt ssh-copy-id -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa.pub 
 ssh root@127.0.0.1 -p 5222 "yum -y install docker python-rhsm-certificates"
 ```
 
-- Git clone `openshihift-ansible` 
+- Git clone `openshihift-ansible`
 ```bash
 git clone -b release-3.7 https://github.com/openshift/openshift-ansible.git
 ```
