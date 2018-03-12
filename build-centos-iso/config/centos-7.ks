@@ -53,11 +53,11 @@ repo --name=updates --baseurl=http://mirror.centos.org/centos/7/updates/x86_64/
 repo --name=extras --baseurl=http://mirror.centos.org/centos/7/extras/x86_64/
 repo --name=atomic --baseurl=http://mirror.centos.org/centos/7/atomic/x86_64/adb/
 
-%packages  --excludedocs --instLangs=en
+%packages  --excludedocs --instLangs=en --ignoremissing
 @core
 openssl
 bash
-# docker # TODO Check why this package is not there during installation
+docker # TODO Check why this package is not there during installation
 dracut
 e4fsprogs
 efibootmgr
