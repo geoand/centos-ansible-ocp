@@ -26,8 +26,9 @@ dd if=/dev/zero bs=2k count=1 of=${BUILD_DIR}/boot.iso
 dd if=$BUILD_DIR/$ISO_NAME.iso bs=2k skip=1 >> ${BUILD_DIR}/tmp.iso
 mv -f ${BUILD_DIR}/tmp.iso $BUILD_DIR/$ISO_NAME.iso
 
-echo "##### Ad md5 signature"
-implantisomd5 $BUILD_DIR/$ISO_NAME.iso
+echo "##### Add md5 signature"
+# TODO: Check if we can resolve this issue : ERROR: Could not find primary volumne!
+# implantisomd5 $BUILD_DIR/$ISO_NAME.iso
 
 echo "##### Copy iso file to your local_host : $LOCAL_HOST/$CENTOS_ISO"
 cp $BUILD_DIR/$ISO_NAME.iso $LOCAL_HOST/$ISO_NAME.iso

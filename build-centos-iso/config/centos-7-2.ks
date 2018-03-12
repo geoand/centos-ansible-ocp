@@ -98,7 +98,7 @@ python-setuptools
 %end
 
 %post
-cat >> $LIVE_ROOT/isolinux/isolinux.cfg << EOF
+cat > \$LIVE_ROOT/isolinux/isolinux.cfg << EOF
 default vesamenu.c32
 timeout 1
 
