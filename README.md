@@ -9,6 +9,8 @@ cd build-centos-iso
 vagrant up
 ```
 
+Remark : Vagrant machine is only required for MacOs's user ! Otherwise skip these steps and execite directly the bash script to create the iso image
+
 - Ssh to the vm. 
 ```bash
 vagrant ssh
