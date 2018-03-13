@@ -1,6 +1,6 @@
 # Action
-install
-cdrom
+# install
+# cdrom
 
 # Run the Setup Agent on first boot
 firstboot --enable
@@ -19,6 +19,9 @@ sshpw --username=root --plaintext centos
 rootpw --plaintext centos
 auth --useshadow --passalgo=sha512
 
+#
+skipx
+
 # System timezone
 timezone Europe/Brussels --isUtc --ntpservers=0.centos.pool.ntp.org,1.centos.pool.ntp.org,2.centos.pool.ntp.org,3.centos.pool.ntp.org
 
@@ -33,8 +36,6 @@ firewall --disabled
 selinux --enforcing
 
 # Network information
-# We can't setup IP fix. TODO: To be investigated
-# network --bootproto=static --device=eth0 --onboot=on --ip=192.168.99.50 --netmask=255.255.255.0 --gateway=192.168.99.1 --nameserver=192.168.99.1 --nameserver=8.8.8.8
 network --bootproto=dhcp --device=eth0 --activate --onboot=on
 network --bootproto=dhcp --device=eth1 --activate --onboot=on
 
@@ -97,108 +98,7 @@ python-setuptools
 -rsyslog
 %end
 
-%post
-cat > \$LIVE_ROOT/isolinux/isolinux.cfg << EOF
-default vesamenu.c32
-timeout 1
-
-display boot.msg
-
-# Clear the screen when exiting the menu, instead of leaving the menu displayed.
-# For vesamenu, this means the graphical background is still displayed without
-# the menu itself for as long as the screen remains in graphics mode.
-menu clear
-menu background splash.png
-menu title CentOS 7
-menu vshift 8
-menu rows 18
-menu margin 8
-#menu hidden
-menu helpmsgrow 15
-menu tabmsgrow 13
-
-# Border Area
-menu color border * #00000000 #00000000 none
-
-# Selected item
-menu color sel 0 #ffffffff #00000000 none
-
-# Title bar
-menu color title 0 #ff7ba3d0 #00000000 none
-
-# Press [Tab] message
-menu color tabmsg 0 #ff3a6496 #00000000 none
-
-# Unselected menu item
-menu color unsel 0 #84b8ffff #00000000 none
-
-# Selected hotkey
-menu color hotsel 0 #84b8ffff #00000000 none
-
-# Unselected hotkey
-menu color hotkey 0 #ffffffff #00000000 none
-
-# Help text
-menu color help 0 #ffffffff #00000000 none
-
-# A scrollbar of some type? Not sure.
-menu color scrollbar 0 #ffffffff #ff355594 none
-
-# Timeout msg
-menu color timeout 0 #ffffffff #00000000 none
-menu color timeout_msg 0 #ffffffff #00000000 none
-
-# Command prompt text
-menu color cmdmark 0 #84b8ffff #00000000 none
-menu color cmdline 0 #ffffffff #00000000 none
-
-# Do not display the actual menu unless the user presses a key. All that is displayed is a timeout message.
-
-menu tabmsg Press Tab for full configuration options on menu items.
-
-menu separator # insert an empty line
-menu separator # insert an empty line
-
-label linux
-  menu label ^Install CentOS 7
-  kernel vmlinuz
-  append initrd=initrd.img ks=cdrom:/ks.cfg ksdevice=eth1 inst.stage2=hd:LABEL=CentOS\x207\x20x86_64 quiet
-
-label check
-  menu label Test this ^media & install CentOS 7
-  menu default
-  kernel vmlinuz
-  append initrd=initrd.img ks=cdrom:/ks.cfg ksdevice=eth1 inst.stage2=hd:LABEL=CentOS\x207\x20x86_64 rd.live.check quiet
-
-menu separator # insert an empty line
-
-# utilities submenu
-menu begin ^Troubleshooting
-  menu title Troubleshooting
-
-label vesa
-  menu indent count 5
-  menu label Install CentOS 7 in ^basic graphics mode
-  text help
-        Try this option out if you're having trouble installing
-        CentOS 7.
-  endtext
-  kernel vmlinuz
-  append initrd=initrd.img ks=cdrom:/ks.cfg  ksdevice=eth1 inst.stage2=hd:LABEL=CentOS\x207\x20x86_64 xdriver=vesa nomodeset quiet
-
-menu separator # insert an empty line
-
-label local
-  menu label Boot from ^local drive
-  localboot 0xffff
-
-menu separator # insert an empty line
-menu separator # insert an empty line
-
-label returntomain
-  menu label Return to ^main menu
-  menu exit
-
-menu end
-EOF
-%end
+# %post --nochroot
+# echo "List INSTALL_ROOT"
+# ls -la $INSTALL_ROOT/
+# %end
