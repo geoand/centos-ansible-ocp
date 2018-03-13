@@ -8,12 +8,11 @@ ISO="$LOCAL_HOST/$CENTOS_ISO"
 echo "##### Create our own ISO ....."
 
 echo "##### Remove bootiso, bootisokf folders"
-rm -rf /tmp/bootiso
-rm -rf /tmp/bootisoks
+rm -rf /tmp/{bootiso,bootisoks}
 
 echo "##### Make bootiso dir and mount the ISO file"
 mkdir /tmp/bootiso
-sudo mount -o loop $LOCAL_HOST/CentOS-7-x86_64-Minimal-1708.iso /tmp/bootiso
+sudo mount -o loop $LOCAL_HOST/$CENTOS_ISO /tmp/bootiso
 mkdir /tmp/bootisoks
 
 echo "##### Copy extracted files to bootisoks"
