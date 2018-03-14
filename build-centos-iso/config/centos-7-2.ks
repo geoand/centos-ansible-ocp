@@ -1,15 +1,15 @@
-# Action
-# install
-# cdrom
-
-# Run the Setup Agent on first boot
-firstboot --enable
+# Install OS instead of upgrade
+cdrom
+install
 
 # Accept Eula
 eula --agreed
 
 # Keyboard layouts
-keyboard --xlayouts='us'
+keyboard 'us'
+
+# Disable firstboot
+firstboot --disable
 
 # System language
 lang en_US.UTF-8
@@ -19,7 +19,7 @@ sshpw --username=root --plaintext centos
 rootpw --plaintext centos
 auth --useshadow --passalgo=sha512
 
-#
+# Skip media disk check
 skipx
 
 # System timezone
@@ -33,7 +33,9 @@ shutdown
 
 # Firewall configuration
 firewall --disabled
-selinux --enforcing
+
+# Selinux
+selinux --disabled
 
 # Network information
 network --bootproto=dhcp --device=eth0 --activate --onboot=on
@@ -41,10 +43,12 @@ network --bootproto=dhcp --device=eth1 --activate --onboot=on
 
 # System bootloader configuration
 bootloader --timeout=1 --location=mbr --append="no_timer_check console=ttyS0 console=tty0 net.ifnames=0 biosdevname=0"
-autopart --type=lvm
+
+# Clear the Master Boot Record
 zerombr
 
 # Partition clearing information
+autopart --type=lvm
 clearpart --all --drives=sda
 ignoredisk --only-use=sda
 
@@ -55,7 +59,6 @@ repo --name=extras --baseurl=http://mirror.centos.org/centos/7/extras/x86_64/
 repo --name=atomic --baseurl=http://mirror.centos.org/centos/7/atomic/x86_64/adb/
 
 %packages  --excludedocs --instLangs=en --ignoremissing
-@base
 @core
 openssl
 bash
@@ -72,6 +75,7 @@ shadow-utils
 shim
 syslinux
 python-setuptools
+yum
 
 # The point of a live image is to install
 anaconda
@@ -103,7 +107,29 @@ isomd5sum
 -rsyslog
 %end
 
-# %post --nochroot
-# echo "List INSTALL_ROOT"
-# ls -la $INSTALL_ROOT/
-# %end
+%post
+
+cat > /etc/rc.d/init.d/centos-live << EOF
+#!/bin/bash
+#
+# live: Init script for live image
+#
+# chkconfig: 345 00 99
+# description: Init script for live image.
+
+. /etc/init.d/functions
+
+# add centos user with no passwd
+useradd -c "Jerry" centos
+echo 'password' | passwd --stdin centos
+
+# Stopgap fix for RH #217966; should be fixed in HAL instead
+touch /media/.hal-mtab
+EOF
+
+chmod 755 /etc/rc.d/init.d/centos-live
+/sbin/restorecon /etc/rc.d/init.d/centos-live
+/sbin/chkconfig --add centos-live
+
+echo "Welcome to my world" > /etc/motd
+%end
