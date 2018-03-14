@@ -8,7 +8,7 @@ OS_NAME="centos7"
 ## generate the config-drive iso
 ##
 gen_iso(){
-    echo "Generating ISO"
+    echo "##### Generating ISO"
     genisoimage -output ${IMAGE_DIR}/vbox-config.iso -volid cidata -joliet -r meta-data user-data
 }
 
@@ -16,18 +16,19 @@ gen_iso(){
 ## Resize as necessary
 ##
 resize(){
-    echo "Resizing Image"
+    echo "#### Resizing Image ....."
     qemu-img resize ${IMAGE_DIR}/${CENTOS_QCOW2} +20G
 }
 ##
 ## Convert the qcow to vmdk
 ##
 make_vmdk(){
-    echo "Converting QCOW to VMDK"
-    qemu-img convert -f qcow2 ${IMAGE_DIR}/${CENTOS_QCOW2} -O vmdk ${IMAGE_DIR}/${OS_NAME}.vmdk
+    echo "#### Converting QCOW to VMDK ...."
+    rm ${IMAGE_DIR}/${OS_NAME}.vmdk && touch ${IMAGE_DIR}/${OS_NAME}.vmdk
+    qemu-img convert -p -f qcow2 ${IMAGE_DIR}/${CENTOS_QCOW2} -O vmdk ${IMAGE_DIR}/${OS_NAME}.vmdk
 }
 
 gen_iso
-resize
+#resize
 make_vmdk
 echo "Done"

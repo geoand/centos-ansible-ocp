@@ -1,15 +1,58 @@
 #cloud-config
+chpasswd:
+  list: |
+    root:centos
+  expire: False
+
+# Not required as they are already there
+# yum_repos:
+#     base:
+#         baseurl: http://mirror.centos.org/centos/7/os/x86_64/
+#         enabled: true
+#     updates:
+#         baseurl: http://mirror.centos.org/centos/7/updates/x86_64/
+#         enabled: true
+#     extras:
+#         baseurl: http://mirror.centos.org/centos/7/extras/x86_64/
+#         enabled: true
+
+disable_root: false
 
 package_upgrade: true
 
 packages:
   - git
   - docker
+  - openssl
+  - bash
+  - dracut
+  - e4fsprogs
+  - efibootmgr
+  - grub2
+  - grub2-efi
+  - kernel
+  - net-tools
+  - NetworkManager
+  - parted
+  - shadow-utils
+  - shim
+  - python-setuptools
 
 users:
   - name: centos
     gecos: Centos User
+    # Passwrod is - passw0rd
+    passwd: $6$altGzO36s.9bPVLU$F/X/IGg5Sdsmc1RgN78O7gV5kvbKX3OPPVvs/qobJpRM4CMQMxjf0JoiMRS1j4V//fkg1QT/6w5gd4KecVtod.
     lock-passwd: false
+    chpasswd: { expire: False }
     sudo: ALL=(ALL) NOPASSWD:ALL
+    ssh_pwauth: True
     ssh_authorized_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDF+zDTRc2Gpv6cD18bVEj0ekK+AIkkIqFg2bRMArPZe5LGEubCUqahyvXzC0mHZwpzjtipC2sANUB045PpkqkOjvHH/GmBF/dkS6qrR315g4uIXCWD3QLH+8tiM74fZjHFegx5IiR0Y4zCYIGvIhEpSIOa6jnCE+ylVOf+E8/SdU/BVkrd4/STyZVTiilGzeOM1O4/G1Z48pGnNGUcToIdBSFfw/wjgaaVmenhf7VNF1K+X5bXWBK6RUiSNZhNyJR64X4OvobPcfnqXCH10VgYlFX5fXvkrIsQ6pVPnPbnaYU0RZBjbbzrF9GbNjj+6jM4Qk644NwPKBE1ecj7WSL9 ch007m@gmail.com
+
+  - name: root
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDF+zDTRc2Gpv6cD18bVEj0ekK+AIkkIqFg2bRMArPZe5LGEubCUqahyvXzC0mHZwpzjtipC2sANUB045PpkqkOjvHH/GmBF/dkS6qrR315g4uIXCWD3QLH+8tiM74fZjHFegx5IiR0Y4zCYIGvIhEpSIOa6jnCE+ylVOf+E8/SdU/BVkrd4/STyZVTiilGzeOM1O4/G1Z48pGnNGUcToIdBSFfw/wjgaaVmenhf7VNF1K+X5bXWBK6RUiSNZhNyJR64X4OvobPcfnqXCH10VgYlFX5fXvkrIsQ6pVPnPbnaYU0RZBjbbzrF9GbNjj+6jM4Qk644NwPKBE1ecj7WSL9 ch007m@gmail.com
+
+runcmd:
+  - systemctl NetworkManager start
