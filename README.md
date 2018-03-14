@@ -75,7 +75,11 @@ ansible-playbook -i inventory openshift-ansible/playbooks/byo/config.yml
 ```
 
 Remarks:
-- If, during the execution of this playbook, ASB playbook will report an error, then relaunch this playbook.
+  - If, during the execution of this playbook, ASB playbook will report an error, then relaunch the following playbook
+  ```bash
+  ansible-playbook -i inventory openshift-ansible/playbooks/byo/openshift-cluster/service-catalog.yml
+  ```
+  - As the `APB` pods could not be deployed correctly, then relaunch the `APB` and `APB etcd` deployments from the console or terminal
 
 - Post installation steps 
 
@@ -83,9 +87,7 @@ Remarks:
   - Setup persistence using `HostPath` mounted volumes `/tmp/pv001 ...`, 
   - Create `infra` project
   - Install Nexus
-  - Install Jenkins
-  
-Remark : As the `APB` pods will not be deployed correctly, Then relaunch the `APB` and `APB etcd` deployments from the console or terminal  
+  - Install Jenkins  
   
 ```bash
 ansible-playbook -i inventory playbook/post_installation.yml -e openshift_node=masters
