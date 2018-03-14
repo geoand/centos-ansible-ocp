@@ -40,7 +40,7 @@ network --bootproto=dhcp --device=eth0 --activate --onboot=on
 network --bootproto=dhcp --device=eth1 --activate --onboot=on
 
 # System bootloader configuration
-bootloader --timeout=1 --location=mbr --boot-drive=sda --append="no_timer_check console=ttyS0 console=tty0 net.ifnames=0 biosdevname=0"
+bootloader --timeout=1 --location=mbr --append="no_timer_check console=ttyS0 console=tty0 net.ifnames=0 biosdevname=0"
 autopart --type=lvm
 zerombr
 
@@ -55,10 +55,11 @@ repo --name=extras --baseurl=http://mirror.centos.org/centos/7/extras/x86_64/
 repo --name=atomic --baseurl=http://mirror.centos.org/centos/7/atomic/x86_64/adb/
 
 %packages  --excludedocs --instLangs=en --ignoremissing
+@base
 @core
 openssl
 bash
-docker # TODO Check why this package is not there during installation
+docker
 dracut
 e4fsprogs
 efibootmgr
@@ -69,8 +70,12 @@ net-tools
 parted
 shadow-utils
 shim
+syslinux
 python-setuptools
 
+# The point of a live image is to install
+anaconda
+isomd5sum
 
 #Packages to be removed
 -aic94xx-firmware

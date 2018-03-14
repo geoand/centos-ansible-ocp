@@ -29,7 +29,7 @@ dd if=${BUILD_DIR}/${ISO_NAME}.iso bs=2k skip=1 >> ${BUILD_DIR}/tmp.iso
 mv -f ${BUILD_DIR}/tmp.iso ${BUILD_DIR}/${ISO_NAME}.iso
 
 echo "##### Add md5 signature"
-# implantisomd5 ${BUILD_DIR}/${ISO_NAME}.is#
+implantisomd5 ${BUILD_DIR}/${ISO_NAME}.iso
 
 echo "##### Copy iso file to your local_host : $LOCAL_HOST/$CENTOS_ISO"
 cp ${BUILD_DIR}/${ISO_NAME}.iso $LOCAL_HOST/${ISO_NAME}.iso
