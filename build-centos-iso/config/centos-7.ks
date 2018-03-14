@@ -68,7 +68,6 @@ shadow-utils
 shim
 python-setuptools
 
-
 #Packages to be removed
 -aic94xx-firmware
 -alsa-firmware
