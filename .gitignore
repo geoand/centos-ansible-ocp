@@ -4,3 +4,4 @@ openshift-ansible/
 ansible.log
 centos7.iso
 build-centos-iso/.vagrant/
+build-centos-iso/cloud-init/user-data
