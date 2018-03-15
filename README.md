@@ -99,7 +99,7 @@ following script `create_vm.sh` on the machine running virtualbox. This script w
 - Rename Centos vmdk to disk.vmdk
 - Create vboxnet0 network and set dhcp server : 192.168.99.50/24
 - Create VM
-- Define NIC adapters; NAT and vboxnet0
+- Define NIC adapters; NAT accessing internet and vboxnet0 to create a private network between the host and the guest
 - Customize vm; ram, cpu, ...
 - Create IDE Controller, attach iso dvd and vmdk disk
 - Start vm and configure SSH Port forward
@@ -139,7 +139,7 @@ VM "CentOS-7" has been successfully started.
 
 Remarks: Ad virtualbox will not be able to unresgister, remove the vm the first time you will execute the script, then warning messages will be displayed !
 
-Test if you can ssh to the newly created vm !
+Test if you can ssh to the newly created vm using the private address `192.168.99.50`!
 ```bash
 ssh root@192.168.99.50     
 The authenticity of host '192.168.99.50 (192.168.99.50)' can't be established.
