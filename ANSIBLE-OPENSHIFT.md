@@ -25,20 +25,23 @@ Remark : As some rpms packages could not be uploaded correctly during the first 
 ansible-playbook -i inventory openshift-ansible/playbooks/byo/config.yml
 ```
 
-Remarks:
-  - If, during the execution of this playbook, ASB playbook will report an error, then relaunch the following playbook
-  ```bash
-  ansible-playbook -i inventory openshift-ansible/playbooks/byo/openshift-cluster/service-catalog.yml
-  ```
-  - As the `APB` pods could not be deployed correctly, then relaunch the `APB` and `APB etcd` deployments from the console or terminal
+** NOTES **
+
+- If during the execution of the byo playbook, the service-catloag role reports this error, then relaunch the following playbook
+```bash
+TASK [ansible_service_broker : Create the Broker resource in the catalog] **************************************************************************************************************************************************************************
+fatal: [192.168.99.50]: FAILED! => {"changed": false, "failed": true, "msg": {"cmd": "/usr/bin/oc create -f /tmp/brokerout-dJmL1S -n default", "results": {}, "returncode": 1, "stderr": "error: unable to recognize \"/tmp/brokerout-dJmL1S\": no matches for servicecatalog.k8s.io/, Kind=ClusterServiceBroker\n", "stdout": ""}}
+
+ansible-playbook -i inventory openshift-ansible/playbooks/byo/openshift-cluster/service-catalog.yml
+```
+- As the `APB` pods could not be deployed correctly, then relaunch the `APB` and `APB etcd` deployments from the console or terminal
 
 - Post installation steps 
 
   - Enable cluster admin role for `admin` user
   - Setup persistence using `HostPath` mounted volumes `/tmp/pv001 ...`, 
   - Create `infra` project
-  - Install Nexus
-  - Install Jenkins  
+  - Install Nexus, Jenkins  
   
 ```bash
 ansible-playbook -i inventory playbook/post_installation.yml -e openshift_node=masters
