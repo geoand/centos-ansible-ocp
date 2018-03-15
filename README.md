@@ -52,7 +52,31 @@ cd cloud-init
 
 e.g
 ./new-iso.sh /Users/dabou CentOS-7-x86_64-GenericCloud.qcow2c true
+##### 1. Add ssh public key and create user-data file
+##### 2. Generating ISO file containing user-data, meta-data files and used by cloud-init at bootstrap
+Total translation table size: 0
+Total rockridge attributes bytes: 331
+Total directory bytes: 0
+Path table size(bytes): 10
+Max brk space used 0
+183 extents written (0 MB)
+#### 3. Downloading  http://cloud.centos.org/centos/7/images//CentOS-7-x86_64-GenericCloud.qcow2c ....
+--2018-03-15 08:06:15--  http://cloud.centos.org/centos/7/images//CentOS-7-x86_64-GenericCloud.qcow2c
+Resolving cloud.centos.org (cloud.centos.org)... 162.252.80.138
+Connecting to cloud.centos.org (cloud.centos.org)|162.252.80.138|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 394918400 (377M)
+Saving to: '/Users/dabou/images/CentOS-7-x86_64-GenericCloud.qcow2c'
 
+100%[===================================================================================================================================================================================================>] 394,918,400 2.81MB/s   in 3m 40s 
+
+2018-03-15 08:09:56 (1.71 MB/s) - '/Users/dabou/images/CentOS-7-x86_64-GenericCloud.qcow2c' saved [394918400/394918400]
+
+#### Optional - Resizing qcow2 Image - +20G
+Image resized.
+#### 4. Converting QCOW to VMDK format
+    (100.00/100%)
+Done
 ```
 The new ISO image is created locally on your machine under this folder `$HOME/images`
 ```bash
@@ -69,14 +93,14 @@ To create automatically a new Virtualbox VM using the CentOS ISO image customize
 following script `create_vm.sh`. This script will perform the following tasks:
 
 - Poweroff machine if it runs
-- unregister vm "$VIRTUAL_BOX_NAME" and delete it
-- Copy disk.vmdk created"
+- Unregister vm "$VIRTUAL_BOX_NAME" and delete it
+- Rename Centos vmdk to disk.vmdk
 - Create vboxnet0 network and set dhcp server : 192.168.99.50/24
-- Create VM"
+- Create VM
 - Define NIC adapters; NAT and vboxnet0
 - Customize vm; ram, cpu, ...
-- Create IDE Controller, attach vmdk disk and iso dvd
-- start vm and configure SSH Port forward
+- Create IDE Controller, attach iso dvd and vmdk disk
+- Start vm and configure SSH Port forward
 
 ```bash
 ./cloud-init/create-vm.sh
