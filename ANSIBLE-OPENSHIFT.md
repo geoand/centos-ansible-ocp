@@ -1,4 +1,5 @@
-# Installation of OpenShift Cluster using Ansaible Playbooks
+# Installation of OpenShift Cluster using Ansible Playbooks
+
 
 - Secure copy your public key to the vm
 ```bash

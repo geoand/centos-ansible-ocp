@@ -1,6 +1,15 @@
-# Install an OpenShift All-in-one cluster on a CentOS VM
+# Create a customized CentOS Cloud image and deploy it on Virtualbox
 
-The following document explains how you can create a customized CentOS Generic Cloud qcow2 image and repackaged it as `vmdk` file. 
+The following document explains how you can create a customized CentOS Generic Cloud qcow2 image and repackaged it as `vmdk` file for Virtualbox.
+
+Table of Contents
+=================
+
+   * [Instructions to create a CentOS ISO Image](#instructions-to-create-a-centos-iso-image)
+      * [MacOS's users only](#macoss-users-only)
+      * [Common steps](#common-steps)
+   * [Create CentOS vm on Virtualbox](#create-centos-vm-on-virtualbox)
+
 
 ## Instructions to create a CentOS ISO Image
 
@@ -89,7 +98,7 @@ ls -la $HOME/images
 -rw-r--r--    1 dabou  staff       374784 Mar 15 09:06 vbox-config.iso
 ```
 
-### Create vm on Virtualbox
+## Create CentOS vm on Virtualbox
 
 To create automatically a new Virtualbox VM using the CentOS ISO image customized, the iso file including the `cloud-init` config files, then execute the
 following script `create_vm.sh` on the machine running virtualbox. This script will perform the following tasks:
