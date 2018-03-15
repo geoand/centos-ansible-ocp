@@ -55,6 +55,7 @@ make_vmdk(){
     qemu-img convert -p -f qcow2 ${IMAGE_DIR}/${CENTOS_QCOW2} -O vmdk ${IMAGE_DIR}/${OS_NAME}.vmdk
 }
 
+mkdir -p ${IMAGE_DIR}
 add_ssh_key
 gen_iso
 wget_centos_qcow
