@@ -7,11 +7,6 @@ sshpass -f pwd.txt ssh -o StrictHostKeyChecking=no root@127.0.0.1 -p 5222 "mkdir
 sshpass -f pwd.txt ssh-copy-id -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa.pub root@127.0.0.1 -p 5222
 ```
 
-- Add the following packages as they perhaps don't exist within the vm
-```bash
-ssh root@127.0.0.1 -p 5222 "yum -y install docker python-rhsm-certificates"
-```
-
 - Git clone `openshihift-ansible` project using version `3.7`
 ```bash
 git clone -b release-3.7 https://github.com/openshift/openshift-ansible.git

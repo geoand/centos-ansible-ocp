@@ -9,9 +9,7 @@ disable_root: false
 package_upgrade: false
 
 packages:
-  - git
   - docker
-  - openssl
   - net-tools
   - NetworkManager
 

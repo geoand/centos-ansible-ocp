@@ -48,7 +48,10 @@ resize(){
 ##
 make_vmdk(){
     echo "#### 4. Converting QCOW to VMDK format"
-    rm ${IMAGE_DIR}/${OS_NAME}.vmdk && touch ${IMAGE_DIR}/${OS_NAME}.vmdk
+    if [ -f "${IMAGE_DIR}/${OS_NAME}.vmdk" ]; then
+      rm ${IMAGE_DIR}/${OS_NAME}.vmdk
+    fi
+    touch ${IMAGE_DIR}/${OS_NAME}.vmdk
     qemu-img convert -p -f qcow2 ${IMAGE_DIR}/${CENTOS_QCOW2} -O vmdk ${IMAGE_DIR}/${OS_NAME}.vmdk
 }
 
