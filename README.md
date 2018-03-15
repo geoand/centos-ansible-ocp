@@ -1,94 +1,90 @@
-# Install OpenShift Cluster using Ansible & CentOS VM provisioned on Virtualbox
+# Install an OpenShift All-in-one cluster on a CentOS VM
 
-## Modify CentOS ISO
+The following document explains how you can create a customized CentOS Generic Cloud qcow2 image and repackaged it as `vmdk` file. 
 
-Depending on the host Operating System that is being run, one of the following method needs to be employed
+## Instructions to create a CentOS ISO Image
 
-### MacOSX
-- Create iso
+### MacOS's users only
+
+As MacOS users can't execute natively all the linux commands, part of the different bash scripts, then it is required to create a Linux vm on virtualbox
+
+- Create and start a vm on virtualbox
 ```bash
+cd build-centos-iso
 vagrant plugin install vagrant-vbguest
 vagrant plugin install sshd
-cd build-centos-iso
 vagrant up
-```
-
-- Ssh to the vm
-```bash
 vagrant ssh
 ```
-- Change the destination folder pointing to your local `home/images` folder where the iso generated file will be created.
-  Edit the `install/new-iso.sh` bash script to change `LOCAL_PATH` parameter. Save it and run the script.
+
+- Move to the `install` directory mounted into the vm by vagrant
 ```bash
-cd install && ./new-iso.sh
-cd ..
-```
-- The new ISO image has been created locally on your local machine under `$HOME/images`
-- Create new vm on your Virtualbox, using the script `./create_vm.sh` with the newly CentOS ISO image created
-```bash
-./create-vm.sh
+cd install 
 ```
 
-### Linux
+### Common steps
+
+In order to prepare the Centos VM for the cloud we are using the `[cloud-init](http://cloudinit.readthedocs.io/en/latest)` tool which is a
+set of python scripts and utilities to make your cloud images be all they can be! 
+
+This tool will be then used to add to the Cloud image that we will install on Virtualbox, your own parameters such as :
+
+- Network configuration (NAT, vboxnet),
+- User : `root`, pwd : `centos`
+- Additonnal non root user, user, password, ssh authorized key, 
+- yum packages, ...
+
+
+Remark : Centos 7 ISO packages by default the version `0.7.9` of the `cloud-init` tool 
+
+To prepare your CentOS image like also the `iso` file that virtualbox will use to bootstrap your vm, you will have to execute the following script. It will perform these tasks :
+
+- Add your SSH public key within the `user-data` fiel using as input the `user-data.tpl` file 
+- Package the files `user-data` and `meta-data` within an ISO file created using `genisoimage` application
+- Convert the `qcow2` Centos ISO image to `vmdk` file format
+
+Execute this bash script to repackage the CentOS ISO image and pass as parameter your `</LOCAL/HOME/DIR>` and the name of the Generic Cloud Centos file `<QCOW2_IMAGE_NAME>` to be downloaded
+from the site `http://cloud.centos.org/centos/7/images/`
 
 ```bash
-cd build-centos-iso
-./new-iso.sh
-./create-vm.sh
-```
+cd cloud-init
+./new-iso.sh </LOCAL/HOME/DIR> <QCOW2_IMAGE_NAME> <BOOLEAN_RESIZE_QCOQ_IMAGE>
 
-## Use Minishift CentOS image
-- Create Virtualbox vm using the `up.sh` bash script
+e.g
+./new-iso.sh /Users/dabou CentOS-7-x86_64-GenericCloud.qcow2c true
+
+```
+The new ISO image is created locally on your machine under this folder `$HOME/images`
 ```bash
-./up.sh
+ls -la $HOME/images
+-rw-r--r--@   1 dabou  staff         6148 Mar 15 09:06 .DS_Store
+-rw-r--r--    1 dabou  staff     61675897 Mar 15 09:06 CentOS-7-x86_64-GenericCloud.qcow2c
+-rw-r--r--    1 dabou  staff            0 Mar 15 09:06 centos7.vmdk
+-rw-r--r--    1 dabou  staff       374784 Mar 15 09:06 vbox-config.iso
 ```
 
-# Installation
+### Create vm on Virtualbox
 
-- Secure copy your public key
+To create automatically a new Virtualbox VM using the CentOS ISO image customized, the iso file including the `cloud-init` config files, then execute the
+following script `create_vm.sh`. This script will perform the following tasks:
+
+- Poweroff machine if it runs
+- unregister vm "$VIRTUAL_BOX_NAME" and delete it
+- Copy disk.vmdk created"
+- Create vboxnet0 network and set dhcp server : 192.168.99.50/24
+- Create VM"
+- Define NIC adapters; NAT and vboxnet0
+- Customize vm; ram, cpu, ...
+- Create IDE Controller, attach vmdk disk and iso dvd
+- start vm and configure SSH Port forward
+
 ```bash
-ssh-keygen -R "[127.0.0.1]:5222"
-sshpass -f pwd.txt ssh -o StrictHostKeyChecking=no root@127.0.0.1 -p 5222 "mkdir ~/.ssh && chmod 700 ~/.ssh && touch ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
-sshpass -f pwd.txt ssh-copy-id -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa.pub root@127.0.0.1 -p 5222
+./cloud-init/create-vm.sh
 ```
 
-- Add docker package as Centos kickstart can't install it during vm creation
+Test if you can ssh to the newly created vm !
 ```bash
-ssh root@127.0.0.1 -p 5222 "yum -y install docker python-rhsm-certificates"
+
 ```
 
-- Git clone `openshihift-ansible`
-```bash
-git clone -b release-3.7 https://github.com/openshift/openshift-ansible.git
-```
-
-- Import RPMs of OpenShift
-```bash
-ansible-playbook -i inventory playbook/install-package.yaml -e openshift_node=masters
-```
-
-Remark : As rpms packages could be not be uploaded correctly the first time, then re-execute the command !
-
-- Create OpenShift cluster
-```bash
-ansible-playbook -i inventory openshift-ansible/playbooks/byo/config.yml
-```
-
-Remarks:
-  - If, during the execution of this playbook, ASB playbook will report an error, then relaunch the following playbook
-  ```bash
-  ansible-playbook -i inventory openshift-ansible/playbooks/byo/openshift-cluster/service-catalog.yml
-  ```
-  - As the `APB` pods could not be deployed correctly, then relaunch the `APB` and `APB etcd` deployments from the console or terminal
-
-- Post installation steps 
-
-  - Enable cluster admin role for `admin` user
-  - Setup persistence using `HostPath` mounted volumes `/tmp/pv001 ...`, 
-  - Create `infra` project
-  - Install Nexus
-  - Install Jenkins  
-  
-```bash
-ansible-playbook -i inventory playbook/post_installation.yml -e openshift_node=masters
-```
+TODO : Test Atomic Centos and Ansible -> http://www.projectatomic.io/docs/quickstart/

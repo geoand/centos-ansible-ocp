@@ -69,6 +69,7 @@ vboxmanage storagectl ${VIRTUAL_BOX_NAME} --name "IDE Controller" --add ide --ho
 vboxmanage storageattach ${VIRTUAL_BOX_NAME} --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium ${LOCAL_HOST}/vbox-config.iso
 vboxmanage storageattach ${VIRTUAL_BOX_NAME} --storagectl "IDE Controller" --port 1 --device 0 --type hdd --medium ${LOCAL_HOST}/disk.vmdk
 
+echo "######### start vm and configure SSH Port forward"
 vboxmanage startvm ${VIRTUAL_BOX_NAME} --type headless
 vboxmanage controlvm ${VIRTUAL_BOX_NAME} natpf2 ssh,tcp,127.0.0.1,5222,,22
 
