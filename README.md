@@ -33,7 +33,7 @@ cd install
 
 ### Common steps
 
-In order to prepare the Centos VM for the cloud we are using the `[cloud-init](http://cloudinit.readthedocs.io/en/latest)` tool which is a
+In order to prepare the Centos VM for the cloud we are using the [cloud-init](http://cloudinit.readthedocs.io/en/latest) tool which is a
 set of python scripts and utilities to make your cloud images be all they can be! 
 
 This tool will be then used to add to the Cloud image that we will install on Virtualbox, your own parameters such as :
@@ -44,9 +44,9 @@ This tool will be then used to add to the Cloud image that we will install on Vi
 - yum packages, ...
 
 
-Remark : Centos 7 ISO packages by default the version `0.7.9` of the `cloud-init` tool 
+Remark : Centos 7 ISO packages by default use version `0.7.9` of the `cloud-init` tool 
 
-To prepare your CentOS image like also the `iso` file that virtualbox will use to bootstrap your vm, you will have to execute the following script. It will perform these tasks :
+To prepare your CentOS image as well as the `iso` file that Virtualbox will use to bootstrap your vm, you will have to execute the following script. It will perform the following tasks :
 
 - Add your SSH public key within the `user-data` file using as input the `user-data.tpl` file 
 - Package the files `user-data` and `meta-data` within an ISO file created using `genisoimage` application
@@ -54,8 +54,8 @@ To prepare your CentOS image like also the `iso` file that virtualbox will use t
 - Convert the `qcow2` Centos ISO image to `vmdk` file format
 - Save the vmdk image under `/LOCAL/HOME/DIR/images`
 
-Execute this bash script to repackage the CentOS ISO image and pass as parameter your `</LOCAL/HOME/DIR>` and the name of the Generic Cloud Centos file `<QCOW2_IMAGE_NAME>` to be downloaded
-from the site `http://cloud.centos.org/centos/7/images/`
+Execute this bash script to repackage the CentOS ISO image and pass as parameter your `</LOCAL/HOME/DIR>` and the name of the Generic Cloud Centos file `<QCOW2_IMAGE_NAME>` which the script downloads
+from `http://cloud.centos.org/centos/7/images/`
 
 ```bash
 cd cloud-init
@@ -89,7 +89,7 @@ Image resized.
     (100.00/100%)
 Done
 ```
-The new ISO image is created locally on your machine under this folder `$HOME/images`
+The new ISO image is created locally on your machine under the directory `$HOME/images`
 ```bash
 ls -la $HOME/images
 -rw-r--r--@   1 dabou  staff         6148 Mar 15 09:06 .DS_Store
@@ -146,7 +146,7 @@ Waiting for VM "CentOS-7" to power on...
 VM "CentOS-7" has been successfully started.
 ```
 
-Remarks: Ad virtualbox will not be able to unresgister, remove the vm the first time you will execute the script, then warning messages will be displayed !
+Remarks: As virtualbox is unable to unregister, remove the vm the first time you will execute the script, then warning messages will be displayed !
 
 Test if you can ssh to the newly created vm using the private address `192.168.99.50`!
 ```bash
